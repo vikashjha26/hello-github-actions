@@ -1,0 +1,32 @@
+name: Jira Subtask Creation
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  create-subtask:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Create Jira Subtask
+      run: |
+        python .github/scripts/create_jira_subtask.py
+      env:
+        JIRA_USERNAME: "bharat.nettem@pinelabs.com" 
+        JIRA_PASSWORD: "NTgzMDM0NDY3ODcyOjQ9Bm53V6wzLVO6C2Jd6VkNb1BA"
+        JIRA_API_URL: "https://jira.pinelabs.com/rest/api/2/issue/"
